@@ -30,12 +30,6 @@
 
 @synthesize quiltView = _quiltView;
 
-- (void)dealloc {
-    [_quiltView release], _quiltView = nil;
-    
-    [super dealloc];
-}
-
 - (void)loadView {
     _quiltView = [[TMQuiltView alloc] initWithFrame:CGRectZero];
     _quiltView.delegate = self;
@@ -51,13 +45,6 @@
     [self.quiltView reloadData];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    
-    self.quiltView = nil;
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self.quiltView reloadData];
 }
@@ -71,7 +58,7 @@
 - (TMQuiltViewCell *)quiltView:(TMQuiltView *)quiltView cellAtIndexPath:(NSIndexPath *)indexPath {
     TMQuiltViewCell *cell = [self.quiltView dequeueReusableCellWithReuseIdentifier:nil];
     if (!cell) {
-        cell = [[[TMQuiltViewCell alloc] initWithReuseIdentifier:nil] autorelease];
+        cell = [[TMQuiltViewCell alloc] initWithReuseIdentifier:nil];
     }
     return cell;
 }

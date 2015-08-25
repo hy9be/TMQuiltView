@@ -34,11 +34,6 @@ const NSInteger kNumberOfCells = 1000;
 
 @synthesize images = _images;
 
-- (void)dealloc {
-    [_images release], _images = nil;
-    [super dealloc];
-}
-
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -65,7 +60,7 @@ const NSInteger kNumberOfCells = 1000;
         for(int i = 0; i < kNumberOfCells; i++) {
             [imageNames addObject:[NSString stringWithFormat:@"%d.jpeg", i % 10 + 1]];
         }
-        _images = [imageNames retain];
+        _images = imageNames;
     }
     return _images;
 }
@@ -81,11 +76,11 @@ const NSInteger kNumberOfCells = 1000;
 - (TMQuiltViewCell *)quiltView:(TMQuiltView *)quiltView cellAtIndexPath:(NSIndexPath *)indexPath {
     TMPhotoQuiltViewCell *cell = (TMPhotoQuiltViewCell *)[quiltView dequeueReusableCellWithReuseIdentifier:@"PhotoCell"];
     if (!cell) {
-        cell = [[[TMPhotoQuiltViewCell alloc] initWithReuseIdentifier:@"PhotoCell"] autorelease];
+        cell = [[TMPhotoQuiltViewCell alloc] initWithReuseIdentifier:@"PhotoCell"];
     }
     
     cell.photoView.image = [self imageAtIndexPath:indexPath];
-    cell.titleLabel.text = [NSString stringWithFormat:@"%d", indexPath.row + 1];
+    cell.titleLabel.text = [NSString stringWithFormat:@"%ld", indexPath.row + 1];
     return cell;
 }
 
