@@ -112,6 +112,16 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        super.alwaysBounceVertical = YES;
+        [self addGestureRecognizer:self.tapGestureRecognizer];
+        _numberOfColumms = kTMQuiltViewDefaultColumns;
+    }
+    return self;
+}
+
 - (void)setDelegate:(id<TMQuiltViewDelegate>)delegate {
     [super setDelegate:delegate];
 }
@@ -221,6 +231,23 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
         TMQuiltViewCell *cell = [self.indexPathToViewByColumn[i] objectForKey:indexPath];
         if (cell) {
             return cell;
+        }
+    }
+    return nil;
+}
+
+- (NSIndexPath *)indexPathForCell:(TMQuiltViewCell *)cell {
+    __block NSIndexPath *path = nil;
+    for(int i = 0; i < _numberOfColumms; i++) {
+        NSMutableDictionary *indexPathsToViews = self.indexPathToViewByColumn[i];
+        [indexPathsToViews enumerateKeysAndObjectsUsingBlock:^(NSIndexPath *key, TMQuiltViewCell *obj, BOOL *stop) {
+            if (obj == cell) {
+                *stop = YES;
+                path = key;
+            }
+        }];
+        if (path) {
+            return path;
         }
     }
     return nil;
@@ -472,6 +499,19 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
             if ([indexPathToView objectForKey:[indexPaths objectAtIndex:j]] != nil) {
                 *bottom = j;
                 break;
+            }
+        }
+        
+        // The last cell in a column might have been harvested after our scroll view bounce.
+        // Here we check if the last cell's frame is partially in our scroll view
+        if (*bottom == [indexPaths count] - 1 && [TMQuiltView isRect:[self rectForCellAtIndex:*bottom column:i] partiallyInScrollView:self]){
+            NSIndexPath *indexPath = [indexPaths objectAtIndex:*bottom];
+            // We check, if the last cell has actually been harvested...
+            if ([indexPathToView objectForKey:indexPath] == nil) {
+                // ... and if so, we add it back
+                TMQuiltViewCell *cell = [self.dataSource quiltView:self cellAtIndexPath:indexPath];
+                [self addSubview:cell];
+                [indexPathToView setObject:cell forKey:indexPath];
             }
         }
     }

@@ -63,6 +63,9 @@ typedef enum {
 // Returns the cell if it's visible and indexPath is valid. Returns nil otherwise
 - (TMQuiltViewCell *)cellAtIndexPath:(NSIndexPath*)indexPath;
 
+// Returns the indexPath if cell is valid. Returns nil otherwise
+- (NSIndexPath *)indexPathForCell:(TMQuiltViewCell *)cell;
+
 // Returns a cell from the reuse pool associated to reuseIdentifier. Return nil if the pool doesn't
 // contain any cell.
 - (TMQuiltViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)reuseIdentifier;
