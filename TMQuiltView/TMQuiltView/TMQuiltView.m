@@ -82,6 +82,10 @@ NSString *const kDefaultReusableIdentifier = @"kTMQuiltViewDefaultReusableIdenti
 
 - (void)cleanupColumns {
     [self recycleViews];
+
+    _indexPathsByColumn = nil;
+    _cellTopByColumn = nil;
+    _indexPathToViewByColumn = nil;
     
     free(_topByColumn), _topByColumn = nil;
     free(_bottomByColumn), _bottomByColumn = nil;
