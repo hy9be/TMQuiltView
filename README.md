@@ -13,6 +13,7 @@ Features
 - Customization of the margins
 - Number of column can depend on orientation
 - Handling of datasource changes (row insertion/removal)
+- ARC
 
 Installation
 =======
@@ -118,7 +119,6 @@ You can also directly open the TMQuiltViewDemo in XCode and build the project.
 TODOs
 =======
 
-- ARC
 - Handle NSIndexPath sections
 - Interface is still limited compared to UITableView's
 - Better animations
