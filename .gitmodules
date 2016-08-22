@@ -1,3 +1,0 @@
-[submodule "Tests/Cedar"]
-	path = Tests/Cedar
-	url = https://github.com/pivotal/cedar.git
